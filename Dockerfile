@@ -35,10 +35,11 @@ RUN bash anaconda.sh -b -p /opt/conda && rm anaconda.sh
 ENV PATH=/opt/conda/bin:$PATH
 
 COPY requirements.txt /app/requirements.txt
+COPY run_forever.sh /app/run_forever.sh
 
 # 安装依赖的python文件
 RUN pip install --no-cache-dir -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn
 
 # 当你运行容器时，默认启动bash（或其他你希望的命令）
-CMD ["/bin/bash"]
+CMD ["nohup", "sh", "run_forever.sh", ">", "monitor.log", "2>&1", "&"]
 
